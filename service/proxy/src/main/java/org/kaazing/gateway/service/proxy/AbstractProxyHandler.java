@@ -331,7 +331,7 @@ public abstract class AbstractProxyHandler extends IoHandlerAdapter {
 
             if (message instanceof IoBufferEx) {
                 IoBufferEx buf = (IoBufferEx) message;
-                message = allocator.wrap(buf.buf(), buf.flags());
+                return allocator.wrap(buf.buf(), buf.flags());
             }
 
             return message;

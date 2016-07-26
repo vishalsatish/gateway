@@ -260,12 +260,12 @@ public abstract class AbstractBioAcceptor<T extends SocketAddress> implements Br
             
             ResourceAddress transport = address.getTransport();
             if (transport != null) {
-                BridgeAcceptor acceptor = bridgeServiceFactory.newBridgeAcceptor(transport);
-                acceptor.bind(transport, handler, initializer);
+                BridgeAcceptor bridgeAcceptor = bridgeServiceFactory.newBridgeAcceptor(transport);
+                bridgeAcceptor.bind(transport, handler, initializer);
             }
             else {
                 NextProtocolBinding nextBinding = bindings.getProtocolBinding(address);
-                boolean needsAcceptorBind = (nextBinding == null);
+                boolean needsAcceptorBind = nextBinding == null;
 
                 Binding newBinding = new Binding(address, handler, initializer);
                 Binding binding = bindings.addBinding(newBinding);

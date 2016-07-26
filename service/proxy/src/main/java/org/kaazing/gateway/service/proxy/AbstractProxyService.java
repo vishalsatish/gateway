@@ -79,10 +79,9 @@ public abstract class AbstractProxyService<HandlerType extends AbstractProxyHand
     public void stop() throws Exception {
         quiesce();
 
-        // defer until stop to allow connect to succeed and re-enable the service
-        serviceContext.unbindConnectsIfNecessary(serviceContext.getConnects());
-
         if (serviceContext != null) {
+        	// defer until stop to allow connect to succeed and re-enable the service
+            serviceContext.unbindConnectsIfNecessary(serviceContext.getConnects());
             for (IoSession session : serviceContext.getActiveSessions()) {
                 session.close(true);
             }

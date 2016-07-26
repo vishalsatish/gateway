@@ -150,8 +150,7 @@ public abstract class AbstractManagementBean implements ManagementBean {
     }
 
     private boolean clearDirty() {
-        boolean val = dirty.compareAndSet(true, false);
-        return val;
+        return dirty.compareAndSet(true, false);
     }
 
     /**

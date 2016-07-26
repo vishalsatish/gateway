@@ -233,9 +233,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
     
     @Override
     protected void setIoAlignment0(Thread ioThread, Executor ioExecutor) {
-        IoSessionEx parent = this.parent.get();
-        if (parent != null) {
-            parent.setIoAlignment(ioThread, ioExecutor);
+        IoSessionEx sessionParent = this.parent.get();
+        if (sessionParent != null) {
+        	sessionParent.setIoAlignment(ioThread, ioExecutor);
         }
     }
 
@@ -243,9 +243,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
     protected void suspendRead1() {
         suspendRead2();
 
-        IoSession parent = this.parent.get();
-        if (parent != null) {
-            parent.suspendRead();
+        IoSession sessionParent = this.parent.get();
+        if (sessionParent != null) {
+        	sessionParent.suspendRead();
         }
     }
     
@@ -258,9 +258,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
         // call super first to trigger processor.consume()
         resumeRead2();
 
-        IoSession parent = this.parent.get();
-        if (parent != null) {
-            parent.resumeRead();
+        IoSession sessionParent = this.parent.get();
+        if (sessionParent != null) {
+        	sessionParent.resumeRead();
         }
     }
 
@@ -320,8 +320,7 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
             sb.append('(').append(getIdAsString()).append(": ").append(getServiceName());
             sb.append(", server, ").append(externalRemoteURI).append(" => ");
             sb.append(externalLocalURI).append(')');
-            String result = sb.toString();
-            return result;
+            return sb.toString();
         } else {
             return "(" + getIdAsString() + ": " + getServiceName() + ", client, " +
                     externalLocalURI + " => " + externalRemoteURI + ')';
@@ -358,9 +357,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
         public void setIdleTime(IdleStatus status, int idleTime) {
             // Don't allow setAll to overwrite idle time settings on the parent, grandparent, etc.
             if (propagateIdleTime) {
-                IoSessionEx parent = AbstractBridgeSession.this.parent.get();
-                if (parent != null) {
-                    parent.getConfig().setIdleTime(status, idleTime);
+                IoSessionEx sessionParent = AbstractBridgeSession.this.parent.get();
+                if (sessionParent != null) {
+                	sessionParent.getConfig().setIdleTime(status, idleTime);
                 }
                 else {
                     super.setIdleTime(status, idleTime);
@@ -372,9 +371,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
         public void setIdleTimeInMillis(IdleStatus status, long idleTimeMillis) {
             // Don't allow setAll to overwrite idle time settings on the parent, grandparent, etc.
             if (propagateIdleTime) {
-                IoSessionEx parent = AbstractBridgeSession.this.parent.get();
-                if (parent != null) {
-                    IoSessionConfigEx config = parent.getConfig();
+                IoSessionEx sessionParent = AbstractBridgeSession.this.parent.get();
+                if (sessionParent != null) {
+                    IoSessionConfigEx config = sessionParent.getConfig();
                     config.setIdleTimeInMillis(status, idleTimeMillis);
                 }
             }
@@ -382,9 +381,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
 
         @Override
         public int getIdleTime(IdleStatus status) {
-            IoSessionEx parent = AbstractBridgeSession.this.parent.get();
-            if (parent != null) {
-                return parent.getConfig().getIdleTime(status);
+            IoSessionEx sessionParent = AbstractBridgeSession.this.parent.get();
+            if (sessionParent != null) {
+                return sessionParent.getConfig().getIdleTime(status);
             }
             else {
                 return super.getIdleTime(status);
@@ -393,9 +392,9 @@ public abstract class AbstractBridgeSession<S extends IoSessionEx, B extends IoB
 
         @Override
         public long getIdleTimeInMillis(IdleStatus status) {
-            IoSessionEx parent = AbstractBridgeSession.this.parent.get();
-            if (parent != null) {
-                IoSessionConfigEx config = parent.getConfig();
+            IoSessionEx sessionParent = AbstractBridgeSession.this.parent.get();
+            if (sessionParent != null) {
+                IoSessionConfigEx config = sessionParent.getConfig();
                 return config.getIdleTimeInMillis(status);
             }
             else {

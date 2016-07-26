@@ -142,12 +142,12 @@ public abstract class AbstractWsBridgeSession<S extends IoSessionEx, B extends I
 	 */
     public void startupSessionTimeoutCommand() {
         if (initSessionTimeoutCommand.compareAndSet(false, true)) {
-            final Long sessionTimeout = getSessionTimeout();
-            if ( sessionTimeout != null && sessionTimeout > 0) {
+            final Long timeoutLength = getSessionTimeout();
+            if ( timeoutLength != null && timeoutLength > 0) {
                 if ( scheduledEventslogger.isTraceEnabled() ) {
-                    scheduledEventslogger.trace( "Establishing a session timeout of " + sessionTimeout + " seconds for WebSocket session (" + getId() + ").");
+                    scheduledEventslogger.trace( "Establishing a session timeout of " + timeoutLength + " seconds for WebSocket session (" + getId() + ").");
                 }
-                scheduleCommand(this.sessionTimeout, sessionTimeout);
+                scheduleCommand(this.sessionTimeout, timeoutLength);
             }
         }
     }
@@ -173,9 +173,9 @@ public abstract class AbstractWsBridgeSession<S extends IoSessionEx, B extends I
         DefaultLoginResult loginResult;
         if ( loginContext != null && (loginResult = loginContext.getLoginResult()) != null
                 && loginResult.getType() == LoginResult.Type.SUCCESS) {
-            Long sessionTimeout = loginResult.getSessionTimeout();
-            if ( sessionTimeout != null && sessionTimeout > 0 ) {
-                return sessionTimeout;
+            Long loginTimeout = loginResult.getSessionTimeout();
+            if ( loginTimeout != null && loginTimeout > 0 ) {
+                return loginTimeout;
             }
         }
         return null;

@@ -114,8 +114,8 @@ public abstract class AbstractBioConnector<T extends SocketAddress> implements B
         final String nextProtocol = remoteAddress.getOption(ResourceAddress.NEXT_PROTOCOL);
         ResourceAddress transport = remoteAddress.getTransport();
         if (transport != null) {
-            BridgeConnector connector = bridgeServiceFactory.newBridgeConnector(transport);
-            future = connector.connect(transport, handler, new IoSessionInitializer<F>() {
+            BridgeConnector bridgeConnector = bridgeServiceFactory.newBridgeConnector(transport);
+            future = bridgeConnector.connect(transport, handler, new IoSessionInitializer<F>() {
                 @Override
                 public void initializeSession(IoSession session, F future) {
                     REMOTE_ADDRESS.set(session, remoteAddress);

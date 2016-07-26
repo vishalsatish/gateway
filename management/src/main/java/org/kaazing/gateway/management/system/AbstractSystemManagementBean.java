@@ -159,12 +159,10 @@ public abstract class AbstractSystemManagementBean extends AbstractManagementBea
 
                     jsonObj.put("readTime", readTime);
 
-                    if (summaryDataList != null) {
-                        // There is only a single thread which can run at a time because this tasks will be rescheduled
-                        if (!summaryDataList.offer(jsonObj)) {
-                            summaryDataList.poll();
-                            summaryDataList.offer(jsonObj);
-                        }
+                 // There is only a single thread which can run at a time because this tasks will be rescheduled
+                    if (summaryDataList != null && !summaryDataList.offer(jsonObj)) {
+                        summaryDataList.poll();
+                        summaryDataList.offer(jsonObj);
                     }
 
                 } catch (SigarException ex) {

@@ -79,10 +79,10 @@ public abstract class AbstractBridgeService<T extends AbstractBridgeSession<?, ?
     protected T newSession(IoSessionInitializer<? extends IoFuture> initializer, IoFuture future, Callable<T> sessionCreator) throws Exception {
         T session;
 
-        IoProcessorEx<T> processor = getProcessor();
-        synchronized (processor) {
+        IoProcessorEx<T> ioProcessor = getProcessor();
+        synchronized (ioProcessor) {
             session = sessionCreator.call();
-            processor.add(session);
+            ioProcessor.add(session);
         }
 
         initSession(session, future, initializer);

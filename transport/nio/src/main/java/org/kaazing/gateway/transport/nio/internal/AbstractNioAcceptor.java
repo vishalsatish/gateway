@@ -310,9 +310,9 @@ public abstract class AbstractNioAcceptor implements BridgeAcceptor {
 
                 ResourceAddress transportAddress = currentAddress.getTransport();
 
-                BridgeAcceptor acceptor = bridgeServiceFactory.newBridgeAcceptor(transportAddress);
+                BridgeAcceptor bridgeAcceptor = bridgeServiceFactory.newBridgeAcceptor(transportAddress);
 
-                acceptor.bind(transportAddress, tcpBridgeHandler, null);
+                bridgeAcceptor.bind(transportAddress, tcpBridgeHandler, null);
             }
             else {
                 // note: [Tcp,Udp]ResourceAddressFactorySpi resolves bind option (then network context) already
